@@ -21,11 +21,15 @@ pipeline {
         }
     }
     post {
+	always {
+            // Các bước sẽ luôn được thực hiện sau khi các bước khác
+            echo 'Pipeline finished.'
+        }
         success {
-            echo 'Pipeline thành công!'
+            echo 'Pipeline success'
         }
         failure {
-            echo 'Pipeline that bại.'
+            echo 'Pipeline fail.'
         }
     }
 }
