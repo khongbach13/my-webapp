@@ -1,37 +1,31 @@
 pipeline {
-    agent any  // Chạy trên bất kỳ agent nào
+    agent any  // Chạy pipeline trên bất kỳ agent nào có sẵn
 
-    environment {
-        // Đặt JAVA_HOME nếu cần
-        JAVA_HOME = tool name: 'JDK 17', type: 'jdk'
+    tools {
+        // Đảm bảo rằng Maven và JDK được cấu hình trong Jenkins
+        maven 'Maven 3.8.7'  // Thay 'Maven 3.8.4' bằng tên của cài đặt Maven đã cấu hình trong Jenkins
+        jdk 'JDK 17'        // Thay 'JDK 17' bằng tên của cài đặt JDK đã cấu hình trong Jenkins
     }
 
     stages {
         stage('Checkout') {
             steps {
-                // Lấy mã nguồn từ repository Git
-                checkout scm
+                // Checkout mã nguồn từ Git
+                git url: 'https://github.com/khongbach13/my-webapp.git', branch: 'main'
             }
         }
-        
+
         stage('Build') {
             steps {
                 // Thực hiện lệnh Maven để xây dựng dự án
-                sh 'mvn clean install'
+                sh 'mvn clean package'
             }
         }
 
-        stage('Test') {
+        stage('Archive') {
             steps {
-                // Thực hiện lệnh Maven để chạy các bài kiểm tra
-                sh 'mvn test'
-            }
-        }
-
-        stage('Package') {
-            steps {
-                // Thực hiện lệnh Maven để đóng gói thành file WAR
-                sh 'mvn package'
+                // Lưu trữ các artefacts (như file JAR hoặc WAR) để tải xuống từ Jenkins
+                archiveArtifacts artifacts: '**/target/*.war', allowEmptyArchive: true
             }
         }
     }
@@ -42,7 +36,7 @@ pipeline {
         }
 
         failure {
-            echo 'Build failed.'
+            echo 'Build failed!'
         }
     }
 }
