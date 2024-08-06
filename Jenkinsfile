@@ -21,12 +21,8 @@ pipeline {
         }
     }
     post {
-	always {
-            // Các bước sẽ luôn được thực hiện sau khi các bước khác
-            echo 'Pipeline finished.'
-        }
         success {
-            echo 'Pipeline success'
+            echo 'Pipeline thành công!'
         }
         failure {
             echo 'Pipeline failer.'
