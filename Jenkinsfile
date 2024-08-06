@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         // Đặt JAVA_HOME nếu cần
-        JAVA_HOME = tool name: 'JDK 11', type: 'jdk'
+        JAVA_HOME = tool name: 'JDK 17', type: 'jdk'
     }
 
     stages {
