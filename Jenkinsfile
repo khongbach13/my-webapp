@@ -12,7 +12,7 @@ pipeline {
         DOCKER_IMAGE_NAME = 'my-tomcat'
         DOCKER_TAG = 'latest'
         DOCKER_REGISTRY = 'docker.io'  // Hoặc URL của Docker Registry khác nếu không phải Docker Hub
-	DOCKER_CREDENTIALS_ID = 'dockerhub'
+	DOCKER_CREDENTIALS_ID = 'dockerhubv1'
     }
 	
     stages {
