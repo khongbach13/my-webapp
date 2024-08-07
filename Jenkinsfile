@@ -7,7 +7,7 @@ pipeline {
                 script {
                     // Thử đăng nhập vào Docker Hub
                     withDockerRegistry([credentialsId: 'dockerhubv1', url: 'https://index.docker.io/v1/']) {
-                        sh 'docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD'
+                        sh 'docker login -u luuphuong13 -p Phuong13@2000'
                     }
                 }
             }
