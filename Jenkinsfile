@@ -13,7 +13,7 @@ pipeline {
         DOCKER_TAG = 'latest'
         DOCKER_REGISTRY = 'docker.io'  // Hoặc URL của Docker Registry khác nếu không phải Docker Hub
         DOCKER_USERNAME = credentials('luuphuong13') // Đặt tên credential Docker Hub đã cấu hình
-        DOCKER_PASSWORD = credentials('Phuong13@2000') // Đặt tên credential Docker Hub đã cấu hình
+        DOCKER_PASSWORD = credentials('dockerhub') // Đặt tên credential Docker Hub đã cấu hình
     }
 	
     stages {
