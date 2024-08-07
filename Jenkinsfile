@@ -12,8 +12,7 @@ pipeline {
         DOCKER_IMAGE_NAME = 'my-tomcat'
         DOCKER_TAG = 'latest'
         DOCKER_REGISTRY = 'docker.io'  // Hoặc URL của Docker Registry khác nếu không phải Docker Hub
-        DOCKER_USERNAME = credentials('luuphuong13/******') // Đặt tên credential Docker Hub đã cấu hình
-        DOCKER_PASSWORD = credentials('luuphuong13/******') // Đặt tên credential Docker Hub đã cấu hình
+	DOCKER_CREDENTIALS_ID = 'dockerhub'
     }
 	
     stages {
@@ -44,12 +43,16 @@ pipeline {
 	stage('Tag and Push Docker Image') {
             steps {
                 script {
-                    // Đăng nhập vào Docker Hub
-                    withDockerRegistry([credentialsId: 'dockerhub', url: DOCKER_REGISTRY]) {
+            		withDockerRegistry([credentialsId: "${DOCKER_CREDENTIALS_ID}", url: "${DOCKER_REGISTRY}"]) {
+                        // Đặt tên đầy đủ cho image
+                        def fullImageName = "${DOCKER_IMAGE_NAME}:${DOCKER_TAG}"
+                        def fullImageNameWithRegistry = "luuphuong13/${fullImageName}"
+                        
                         // Tag image với tên đầy đủ
-                        docker.image("${DOCKER_IMAGE_NAME}:${DOCKER_TAG}").tag("${DOCKER_USERNAME}/${DOCKER_IMAGE_NAME}:${DOCKER_TAG}")
+                        docker.image(fullImageName).tag(fullImageNameWithRegistry)
+                        
                         // Push image lên Docker Hub
-                        docker.image("${DOCKER_USERNAME}/${DOCKER_IMAGE_NAME}:${DOCKER_TAG}").push("${DOCKER_TAG}")
+                        docker.image(fullImageNameWithRegistry).push("${DOCKER_TAG}")
                     }
                 }
             }
