@@ -13,7 +13,7 @@ pipeline {
         DOCKER_TAG = 'latest'
         DOCKER_REGISTRY = 'docker.io'  // Hoặc URL của Docker Registry khác nếu không phải Docker Hub
         DOCKER_USERNAME = credentials('luuphuong13') // Đặt tên credential Docker Hub đã cấu hình
-        DOCKER_PASSWORD = credentials('dockerhub') // Đặt tên credential Docker Hub đã cấu hình
+        DOCKER_PASSWORD = credentials('Phuong13@2000') // Đặt tên credential Docker Hub đã cấu hình
     }
 	
     stages {
@@ -45,7 +45,7 @@ pipeline {
             steps {
                 script {
                     // Đăng nhập vào Docker Hub
-                    withDockerRegistry([credentialsId: 'dockerhub-credentials-id', url: DOCKER_REGISTRY]) {
+                    withDockerRegistry([credentialsId: 'dockerhub', url: DOCKER_REGISTRY]) {
                         // Tag image với tên đầy đủ
                         docker.image("${DOCKER_IMAGE_NAME}:${DOCKER_TAG}").tag("${DOCKER_USERNAME}/${DOCKER_IMAGE_NAME}:${DOCKER_TAG}")
                         // Push image lên Docker Hub
