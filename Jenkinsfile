@@ -37,7 +37,7 @@ pipeline {
             steps {
                 script {
                     // Chạy Docker container từ image vừa xây dựng
-                    docker.image('my-tomcat-app:latest').run('-name tomcatapp -p 8088:8080')
+                    docker.image('my-tomcat-app:latest').run('--name tomcatapp -p 8088:8080')
                 }
             }
         }
