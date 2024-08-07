@@ -7,7 +7,15 @@ pipeline {
         jdk 'JDK 17'        // Thay 'JDK 17' bằng tên của cài đặt JDK đã cấu hình trong Jenkins
     }
     
-    
+    environment {
+        // Đặt tên cho image và tag
+        DOCKER_IMAGE_NAME = 'my-tomcat'
+        DOCKER_TAG = 'latest'
+        DOCKER_REGISTRY = 'docker.io'  // Hoặc URL của Docker Registry khác nếu không phải Docker Hub
+        DOCKER_USERNAME = credentials('luuphuong13') // Đặt tên credential Docker Hub đã cấu hình
+        DOCKER_PASSWORD = credentials('Phuong13@2000') // Đặt tên credential Docker Hub đã cấu hình
+    }
+	
     stages {
 
 	stage('Checkout') {
@@ -28,7 +36,21 @@ pipeline {
             steps {
                 script {
                     // Xây dựng Docker image từ Dockerfile
-                    def app = docker.build("my-tomcat-app:latest")
+                    def app = docker.build("${DOCKER_IMAGE_NAME}:${DOCKER_TAG}")
+                }
+            }
+        }
+
+	stage('Tag and Push Docker Image') {
+            steps {
+                script {
+                    // Đăng nhập vào Docker Hub
+                    withDockerRegistry([credentialsId: 'dockerhub-credentials-id', url: DOCKER_REGISTRY]) {
+                        // Tag image với tên đầy đủ
+                        docker.image("${DOCKER_IMAGE_NAME}:${DOCKER_TAG}").tag("${DOCKER_USERNAME}/${DOCKER_IMAGE_NAME}:${DOCKER_TAG}")
+                        // Push image lên Docker Hub
+                        docker.image("${DOCKER_USERNAME}/${DOCKER_IMAGE_NAME}:${DOCKER_TAG}").push("${DOCKER_TAG}")
+                    }
                 }
             }
         }
@@ -37,7 +59,7 @@ pipeline {
             steps {
                 script {
                     // Chạy Docker container từ image vừa xây dựng
-                    docker.image('my-tomcat-app:latest').run('--name tomcatapp -p 8088:8080')
+                    docker.image("${DOCKER_IMAGE_NAME}:${DOCKER_TAG}").run('--name tomcat_app -p 8083:8080')
                 }
             }
         }
