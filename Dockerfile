@@ -5,7 +5,7 @@ FROM tomcat:10.1-jdk17
 RUN rm -rf /usr/local/tomcat/webapps/
 
 # Sao chép ứng dụng của bạn vào thư mục webapps
-COPY ./target/*.war /usr/local/tomcat/webapps/webapp.war
+COPY ./target/*.war /usr/local/tomcat/webapps/webdocker.war
 
 # Cấu hình môi trường (nếu cần)
 ENV CATALINA_OPTS="-Xms512M -Xmx1024M"
